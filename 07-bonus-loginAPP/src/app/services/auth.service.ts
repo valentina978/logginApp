@@ -35,7 +35,7 @@ export class AuthService {
     };
 
     return this.http.post(
-     `${this.url}/signupNewUser?key=${this.apikey}`,
+     `${this.url}/verifyPassword?key=${this.apikey}`,
      authData
     );
 
