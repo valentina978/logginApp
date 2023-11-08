@@ -106,13 +106,20 @@ export class AuthService {
     const expiraDate = new Date();
     expiraDate.setTime(expira);
 
+   /*  if ( expiraDate > new Date() ) {
+      return true;
+    } else {
+      return false;
+    } */
+
+
+
+
     if ( expiraDate > new Date() ) {
       return true;
     } else {
       return false;
     }
-
-
   }
 
 
