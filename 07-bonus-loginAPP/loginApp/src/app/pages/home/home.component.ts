@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +10,16 @@ import { AuthService } from 'src/app/services/auth.service';
 export class HomeComponent implements OnInit {
 
   constructor( private auth: AuthService,
-    private router: Router ) { }
+               private router: Router ) { }
+
   ngOnInit() {
   }
+
   salir() {
 
     this.auth.logout();
     this.router.navigateByUrl('/login');
-    
-    }
+
+  }
 
 }

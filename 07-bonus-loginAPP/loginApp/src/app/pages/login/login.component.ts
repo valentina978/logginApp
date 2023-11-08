@@ -1,31 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioModel } from 'src/app/models/usuario.model';
-import { NgForm } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+
+import { UsuarioModel } from '../../models/usuario.model';
+import { AuthService } from '../../services/auth.service';
+
+import Swal from 'sweetalert2';
+
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class RegistroComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   usuario: UsuarioModel = new UsuarioModel();
   recordarme = false;
 
-
-  constructor(private auth:AuthService,
-              private router: Router) { }
+  constructor( private auth: AuthService,
+               private router: Router ) { }
 
   ngOnInit() {
-    this.usuario = new UsuarioModel();
-    /* this.usuario.email = 'fernando.herrera85@gmail.com'; */
+
+    if ( localStorage.getItem('email') ) {
+      this.usuario.email = localStorage.getItem('email');
+      this.recordarme = true;
+    }
+
   }
 
-  onSubmit( form: NgForm){
 
-    if( form.invalid){return}
+  login( form: NgForm ) {
+
+    if (  form.invalid ) { return; }
 
     Swal.fire({
       allowOutsideClick: false,
@@ -34,7 +41,8 @@ export class RegistroComponent implements OnInit {
     });
     Swal.showLoading();
 
-    this.auth.nuevoUsuario( this.usuario )
+
+    this.auth.login( this.usuario )
       .subscribe( resp => {
 
         console.log(resp);
@@ -44,9 +52,11 @@ export class RegistroComponent implements OnInit {
           localStorage.setItem('email', this.usuario.email);
         }
 
+
         this.router.navigateByUrl('/home');
 
       }, (err) => {
+
         console.log(err.error.error.message);
         Swal.fire({
           icon: 'error',
@@ -54,5 +64,7 @@ export class RegistroComponent implements OnInit {
           text: err.error.error.message
         });
       });
+
   }
+
 }
